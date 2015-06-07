@@ -1,0 +1,64 @@
+.box{
+	background: #ddd;
+	margin-right: 10px;
+	margin-right: 10px;
+	padding: 5px;
+	display: inline-table;
+}
+.d1{
+	position: relative;
+	margin: 6px;
+	float: left;
+	display: inline-table;
+}
+
+.d2{
+	position: relative;
+	clear: left;
+}
+
+input{
+	margin: 2px;
+}
+
+.p1{
+	margin: 1px;
+}
+
+.canvas-box{
+	width: 615px;
+	height: 660px;
+	position: relative;
+	float: left;
+	left: 10px;
+}
+
+.control-box{
+	margin-right: 10px;
+	margin-right: 10px;
+	position: relative;
+	padding-left: 10px;
+	float: left;
+	width: 315px;
+	height: 665px;	
+}
+
+.input-box{
+	width: 300px;
+	position: relative;
+	float: left;
+	padding: 5px;
+}
+
+.table-box{
+	width: 300px;
+	position: relative;
+	top:0px;
+	padding: 5px;
+}
+
+.info-box{
+	position: relative;
+	float: left;
+	width: 300px;
+}
