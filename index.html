@@ -1,0 +1,130 @@
+<!--
+СПИСОК ПРАВОК относительно v.0.2.3
+* добавлено поле с инструкцией по работе с программой
+* рефакторинг css-кода
+BUGS
+* ошибки в удалении зарядов
+TODO
+* возможность множественного удаления зарядов
+* возможность редактировать заряды по клику на canvas
+-->
+  
+<!doctype html>
+
+<html>
+    <head>
+		 <script src="js/jquery-2.1.1.js"></script>
+		 <script src="js/bootstrap.min.js"></script>
+		 <script src="js/script-0.2.4.js"></script>
+		 <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+		 <link rel="stylesheet" type="text/css" href="css/index-0.2.4.css">
+		 <title>Electrostatic Field</title>
+		 <meta charset='utf-8' />
+    </head>
+    <header class="page-header">
+    	<h1>Моделирование поля n статических электрических зарядов</h1>
+    	<!--<smal>Курсовая работа студента группы ИВТ-12 1 курса ДКИ МИЭМ НИУ ВШЭ Ситникова Максима</smal>-->
+    </header>
+    <body>
+    
+		<!-- ВСПЛЫВАЮЩЕЕ ОКНО -->
+		<div class="modal fade" id="myModal" onkeydown="if (event.keyCode == 13){AddByClick(event)}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  			<div class="modal-dialog">
+    			<div class="modal-content">
+      			<div class="modal-header">
+        				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        				<h4 class="modal-title" id="myModalLabel">Добавление заряда</h4>
+      			</div>
+      			<div class="modal-body">
+        				<p>Выбранные координаты: (<b><span id="newCx"></span></b>;<b><span id="newCy"></span></b>).</p>
+        				<div class="panel panel-default" style="padding:5px">
+        					<p>Введите величину заряда</p> 
+        					<p>Q: <input type="text" id="newQ" value="0"></input></p>
+        				</div>
+      			</div>
+      			<div class="modal-footer">
+        				<button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+        				<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="AddByClick(event)" >Добавить</button>
+     			 	</div>
+    			</div>
+  			</div>
+		</div>
+   	   	
+   	<!--КАНВА-->
+    	<div class="box canvas-box panel panel-default">
+			<canvas class="mainCan" height="650" width="601" id="can" onclick="CanvasListener(event)" onmousemove="TensionDetector(event)"></canvas>
+    	</div>
+    	
+    	<!--БЛОК УПРАВЛЕНИЯ-->
+    	<div class="control-box">
+    		<div class="box input-box panel panel-primary">
+    			<div class="panel-heading">Форма добавления зарядов</div>    		
+	    		<div class="d1">
+					<p class="p1">X:<input id="xCrd" value="0" size="5"></input></p>	
+					<p class="p1">Y:<input id="yCrd" value="0" size="5"></input></p>
+					<p class="p1">q:<input id="q" value="0.5" size="5"></input></p>
+   				<p><button id="AddBut" class="btn btn-primary btn-sm" onclick="AddByForm()">Добавить</button>
+   				<p><button id="AddBut" class="btn btn-primary btn-sm" onclick="deleteAll()">Удалить все</button>
+    			</div>
+    			<div class="d1">
+    				<!--
+    				<p class="p2">Масштаб:</p>
+    				<p class="p2">1px = 1
+    					<select id="distanceFactorList">
+							<option value="1">м</option>
+							<option value="-2">см</option>
+							<option value="-3">мм</option>
+							<option value="-6">мкм</option>
+						</select>
+   				</p>
+   				<p class="p2"><br></p>
+   				<p class="p2"><br></p>
+   				<p class="p2">
+   					<select id="chargeFactorList">
+   						<option value="0">Кл</option>
+   						<option value="-3">мКл</option>
+   						<option value="-6">мкКл</option>
+   						<option value="-9">нКл</option>
+   					</select>
+   				</p>
+   				-->
+    			</div>
+    			<div class="d1">
+    				<p class="p1">Элементы отрисовки:</p>
+					<p>
+					<input type="checkbox" id="needCrd" checked>Координатная сетка</input><br>
+					<input type="checkbox" id="needLines">Силовые линии</input><br>
+					</p>
+    				<button id="DrawBut" class="btn btn-primary btn-sm" onclick="reDrawing()">Нарисовать</button></p>
+    			</div>
+    			<div class="d2">
+    				<p>Напряженность в точке (<span id="ex">0</span>;<span id="ey">0</span>): </p>
+    				<p>|E|:<input id="E" value="0.0" size="5"  readonly>В/м </p>
+    			</div>
+    		</div>
+    		<div class="box table-box panel panel-primary">
+    			<div class="panel-heading">Таблица зарядов</div>
+    			<table cellpadding="100" id="chrg" class="table table-striped table-bordered table-hover table-condensed">
+					<tr><th>x, м</th><th>y, м</th><th>q, Кл</th><th>Удалить</th></tr>
+				</table>
+   		</div> 	
+    	</div>
+    	<!-- 
+    	<!--ИНФОБЛОК
+    	<div class="info-box">
+    		<div class="box panel panel-primary">
+   				<div class="panel-heading">Инстркуция по работе</div>
+    				<div class="info-text">
+    				Данная программа предназначена для моделирования электростатического поля электрических зарядов.	
+    					<ol>
+    						<li></li>
+    						<li></li>
+    						<li></li>
+    						<li></li>
+    					</ol>
+    				</div>    		
+    		</div>
+		</div>
+		-->
+    </body>
+</html>
