@@ -1,2 +1,2 @@
 # Electrostatic-Field
-Course Work
+Project that viusualize an electrostatic field, using web-technologies like HTML, JavaScript, and CSS.
